@@ -2,11 +2,14 @@ import { Module } from '@nestjs/common';
 import { HealthController } from './health.controller';
 import { DynamoDB } from 'aws-sdk';
 import { ConfigModule } from '@nestjs/config';
+import { TerminusModule } from '@nestjs/terminus';
+import { DynamoDBHealthIndicator } from './dynamodb.health';
 
 @Module({
-  imports: [ConfigModule],
+  imports: [ConfigModule, TerminusModule],
   controllers: [HealthController],
   providers: [
+    DynamoDBHealthIndicator,
     {
       provide: 'DYNAMODB',
       useFactory: () => {

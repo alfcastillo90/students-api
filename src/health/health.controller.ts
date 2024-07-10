@@ -1,32 +1,19 @@
-import { Controller, Get, Inject } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { DynamoDB } from 'aws-sdk';
+import { Controller, Get } from '@nestjs/common';
+import { HealthCheckService, HealthCheck } from '@nestjs/terminus';
+import { DynamoDBHealthIndicator } from './dynamodb.health';
 
-@ApiTags('health')
 @Controller('health')
 export class HealthController {
   constructor(
-    @Inject('DYNAMODB') private readonly dynamoDB: DynamoDB.DocumentClient,
+    private health: HealthCheckService,
+    private dynamoDBHealthIndicator: DynamoDBHealthIndicator,
   ) {}
 
   @Get()
-  async check() {
-    try {
-      await this.dynamoDB
-        .scan({ TableName: 'students-table', Limit: 1 })
-        .promise();
-      return {
-        status: 'ok',
-        database: 'connected',
-        timestamp: new Date().toISOString(),
-      };
-    } catch (error) {
-      return {
-        status: 'ok',
-        database: 'disconnected',
-        timestamp: new Date().toISOString(),
-        error: error.message,
-      };
-    }
+  @HealthCheck()
+  check() {
+    return this.health.check([
+      async () => this.dynamoDBHealthIndicator.isHealthy('dynamoDB'),
+    ]);
   }
 }

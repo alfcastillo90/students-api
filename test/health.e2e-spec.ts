@@ -24,8 +24,8 @@ describe('HealthController (e2e)', () => {
       .expect(200);
 
     expect(response.body.status).toBe('ok');
-    expect(response.body).toHaveProperty('database');
-    expect(response.body).toHaveProperty('timestamp');
+    expect(response.body).toHaveProperty('details');
+    expect(response.body.details).toHaveProperty('dynamoDB');
   });
 
   afterEach(async () => {
