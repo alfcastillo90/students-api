@@ -10,6 +10,16 @@ provider:
     NODE_ENV: ${env:NODE_ENV, 'dev'}
     STUDENTS_TABLE: students-${opt:stage, 'dev'}
     API_KEY: ${env:API_KEY, 'default_api_key'}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Scan
+        - dynamodb:Query
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: arn:aws:dynamodb:us-east-1:374138784102:table/students-dev
 
 functions:
   app:
@@ -25,9 +35,9 @@ functions:
           cors: true
 
 plugins:
-  - serverless-plugin-include-dependencies
   - serverless-offline
   - serverless-dynamodb-local
+  - serverless-plugin-include-dependencies
 
 custom:
   esbuild:
