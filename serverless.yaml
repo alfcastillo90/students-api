@@ -1,14 +1,15 @@
 service: students-api
 
-frameworkVersion: '3'
+frameworkVersion: '4'
 
 provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-1
   environment:
-    NODE_ENV: ${env:NODE_ENV}
+    NODE_ENV: ${env:NODE_ENV, 'dev'}
     STUDENTS_TABLE: students-${opt:stage, 'dev'}
+    API_KEY: ${env:API_KEY, 'default_api_key'}
 
 functions:
   app:
@@ -24,12 +25,21 @@ functions:
           cors: true
 
 plugins:
-  - serverless-plugin-typescript
   - serverless-plugin-include-dependencies
   - serverless-offline
   - serverless-dynamodb-local
 
 custom:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    exclude: ['aws-sdk']
+    target: 'node18'
+    define: { 'require.resolve': undefined }
+    platform: 'node'
+    concurrency: 10
+
   dynamodb:
     stages:
       - dev
