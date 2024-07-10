@@ -44,6 +44,9 @@ describe('StudentsController', () => {
       const createStudentDto: CreateStudentDto = {
         name: 'Test Student',
         email: 'student@test.com',
+        birthDate: '2000-01-01T00:00:00.000Z',
+        enrollmentDate: '2024-01-01T00:00:00.000Z',
+        courses: ['Math', 'Science'],
       };
       const result: Student = {
         id: '1',
@@ -62,6 +65,9 @@ describe('StudentsController', () => {
           id: '1',
           name: 'Test Student',
           email: 'student@test.com',
+          birthDate: '2000-01-01T00:00:00.000Z',
+          enrollmentDate: '2024-01-01T00:00:00.000Z',
+          courses: ['Math', 'Science'],
         },
       ];
       jest.spyOn(studentsService, 'findAll').mockResolvedValue(result);
@@ -76,6 +82,9 @@ describe('StudentsController', () => {
         id: '1',
         name: 'Test Student',
         email: 'student@test.com',
+        birthDate: '2000-01-01T00:00:00.000Z',
+        enrollmentDate: '2024-01-01T00:00:00.000Z',
+        courses: ['Math', 'Science'],
       };
       jest.spyOn(studentsService, 'findOne').mockResolvedValue(result);
 
@@ -88,6 +97,9 @@ describe('StudentsController', () => {
       const updateStudentDto: UpdateStudentDto = {
         name: 'Updated Student',
         email: 'student@test.com',
+        birthDate: '1999-01-01T00:00:00.000Z',
+        enrollmentDate: '2023-01-01T00:00:00.000Z',
+        courses: ['History', 'Math'],
       };
       jest.spyOn(studentsService, 'update').mockResolvedValue(undefined);
 

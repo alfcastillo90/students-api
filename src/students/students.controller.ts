@@ -25,7 +25,7 @@ import { ApiKeyGuard } from '../guards/api-key/api-key.guard';
 @ApiTags('students')
 @ApiSecurity('apiKey')
 @Controller('students')
-@UseGuards(ApiKeyGuard) // Aplica el guard a todo el controlador
+@UseGuards(ApiKeyGuard)
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 

@@ -12,7 +12,7 @@ jest.mock('aws-sdk', () => {
     get: jest.fn().mockReturnThis(),
     update: jest.fn().mockReturnThis(),
     delete: jest.fn().mockReturnThis(),
-    promise: jest.fn(), // Añade 'promise' aquí
+    promise: jest.fn(),
   };
   return {
     DynamoDB: {
@@ -62,6 +62,9 @@ describe('StudentsService', () => {
       const createStudentDto: CreateStudentDto = {
         name: 'Test Student',
         email: 'test@student.com',
+        birthDate: '2000-01-01T00:00:00.000Z',
+        enrollmentDate: '2024-01-01T00:00:00.000Z',
+        courses: ['Math', 'Science'],
       };
       const student: Student = {
         id: 'unique-id',
@@ -84,7 +87,14 @@ describe('StudentsService', () => {
   describe('findAll', () => {
     it('should return an array of students', async () => {
       const students: Student[] = [
-        { id: '1', name: 'Student 1', email: 'student1@test.com' },
+        {
+          id: '1',
+          name: 'Student 1',
+          email: 'student1@test.com',
+          birthDate: '2000-01-01T00:00:00.000Z',
+          enrollmentDate: '2024-01-01T00:00:00.000Z',
+          courses: ['Math', 'Science'],
+        },
       ];
       (
         dynamoDB.scan({ TableName: 'students-table' }).promise as jest.Mock
@@ -106,6 +116,9 @@ describe('StudentsService', () => {
         id: '1',
         name: 'Student 1',
         email: 'student1@test.com',
+        birthDate: '2000-01-01T00:00:00.000Z',
+        enrollmentDate: '2024-01-01T00:00:00.000Z',
+        courses: ['Math', 'Science'],
       };
       (
         dynamoDB.get({ TableName: 'students-table', Key: { id: '1' } })
@@ -121,6 +134,17 @@ describe('StudentsService', () => {
         Key: { id: '1' },
       });
     });
+
+    it('should throw a NotFoundException if student is not found', async () => {
+      (
+        dynamoDB.get({ TableName: 'students-table', Key: { id: '1' } })
+          .promise as jest.Mock
+      ).mockResolvedValue({});
+
+      await expect(service.findOne('1')).rejects.toThrow(
+        `Student with ID "1" not found`,
+      );
+    });
   });
 
   describe('update', () => {
@@ -128,11 +152,30 @@ describe('StudentsService', () => {
       const updateStudentDto: Partial<CreateStudentDto> = {
         name: 'Updated Student',
         email: 'updated@student.com',
+        birthDate: '1999-01-01T00:00:00.000Z',
+        enrollmentDate: '2023-01-01T00:00:00.000Z',
+        courses: ['History', 'Math'],
       };
       (
         dynamoDB.update({
-          TableName: '',
-          Key: {},
+          TableName: 'students-table',
+          Key: { id: '1' },
+          UpdateExpression:
+            'set #name = :name, #email = :email, #birthDate = :birthDate, #enrollmentDate = :enrollmentDate, #courses = :courses',
+          ExpressionAttributeNames: {
+            '#name': 'name',
+            '#email': 'email',
+            '#birthDate': 'birthDate',
+            '#enrollmentDate': 'enrollmentDate',
+            '#courses': 'courses',
+          },
+          ExpressionAttributeValues: {
+            ':name': updateStudentDto.name,
+            ':email': updateStudentDto.email,
+            ':birthDate': updateStudentDto.birthDate,
+            ':enrollmentDate': updateStudentDto.enrollmentDate,
+            ':courses': updateStudentDto.courses,
+          },
         }).promise as jest.Mock
       ).mockResolvedValue({});
 
@@ -140,14 +183,21 @@ describe('StudentsService', () => {
       expect(dynamoDB.update).toHaveBeenCalledWith({
         TableName: 'students-table',
         Key: { id: '1' },
-        UpdateExpression: 'set #name = :name, #email = :email',
+        UpdateExpression:
+          'set #name = :name, #email = :email, #birthDate = :birthDate, #enrollmentDate = :enrollmentDate, #courses = :courses',
         ExpressionAttributeNames: {
           '#name': 'name',
           '#email': 'email',
+          '#birthDate': 'birthDate',
+          '#enrollmentDate': 'enrollmentDate',
+          '#courses': 'courses',
         },
         ExpressionAttributeValues: {
           ':name': updateStudentDto.name,
           ':email': updateStudentDto.email,
+          ':birthDate': updateStudentDto.birthDate,
+          ':enrollmentDate': updateStudentDto.enrollmentDate,
+          ':courses': updateStudentDto.courses,
         },
       });
     });

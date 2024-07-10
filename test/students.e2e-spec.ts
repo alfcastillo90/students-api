@@ -25,6 +25,9 @@ describe('StudentsController (e2e)', () => {
     const createStudentDto: CreateStudentDto = {
       name: 'Test Student',
       email: 'test@student.com',
+      birthDate: '2000-01-01T00:00:00.000Z',
+      enrollmentDate: '2024-01-01T00:00:00.000Z',
+      courses: ['Math', 'Science'],
     };
 
     const response = await request(app.getHttpServer())
@@ -52,6 +55,9 @@ describe('StudentsController (e2e)', () => {
     const createStudentDto: CreateStudentDto = {
       name: 'Test Student',
       email: 'test@student.com',
+      birthDate: '2000-01-01T00:00:00.000Z',
+      enrollmentDate: '2024-01-01T00:00:00.000Z',
+      courses: ['Math', 'Science'],
     };
 
     const createdStudent = await request(app.getHttpServer())
@@ -72,11 +78,17 @@ describe('StudentsController (e2e)', () => {
     const createStudentDto: CreateStudentDto = {
       name: 'Test Student',
       email: 'test@student.com',
+      birthDate: '2000-01-01T00:00:00.000Z',
+      enrollmentDate: '2024-01-01T00:00:00.000Z',
+      courses: ['Math', 'Science'],
     };
 
     const updateStudentDto: UpdateStudentDto = {
-      name: 'Updated Student',
-      email: 'updated@student.com',
+      name: 'Test Student',
+      email: 'test@student.com',
+      birthDate: '2000-01-01T00:00:00.000Z',
+      enrollmentDate: '2024-01-01T00:00:00.000Z',
+      courses: ['Math', 'Science'],
     };
 
     const createdStudent = await request(app.getHttpServer())
@@ -106,6 +118,9 @@ describe('StudentsController (e2e)', () => {
     const createStudentDto: CreateStudentDto = {
       name: 'Test Student',
       email: 'test@student.com',
+      birthDate: '2000-01-01T00:00:00.000Z',
+      enrollmentDate: '2024-01-01T00:00:00.000Z',
+      courses: ['Math', 'Science'],
     };
 
     const createdStudent = await request(app.getHttpServer())
