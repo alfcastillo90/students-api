@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
-import { StudentsService } from './students.service';
-import { StudentsController } from './students.controller';
+import { HealthController } from './health.controller';
 import { DynamoDB } from 'aws-sdk';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [ConfigModule],
-  controllers: [StudentsController],
+  controllers: [HealthController],
   providers: [
-    StudentsService,
     {
       provide: 'DYNAMODB',
       useFactory: () => {
@@ -19,4 +17,4 @@ import { ConfigModule } from '@nestjs/config';
     },
   ],
 })
-export class StudentsModule {}
+export class HealthModule {}
