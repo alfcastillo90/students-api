@@ -22,7 +22,7 @@ export class DynamoDBHealthIndicator extends HealthIndicator {
       TableName: 'students-dev',
       Limit: 1,
     };
-
+    console.log('isHealthy init');
     try {
       await this.dynamoDB.scan(params).promise();
       return this.getStatus(key, true);
