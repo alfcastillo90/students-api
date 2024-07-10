@@ -14,6 +14,8 @@ async function bootstrapServer() {
   const app = await NestFactory.create(AppModule, adapter);
   app.enableCors();
 
+  app.setGlobalPrefix('dev');
+
   const options = new DocumentBuilder()
     .setTitle('Students API')
     .setDescription('API for managing students')
@@ -29,6 +31,7 @@ async function bootstrapServer() {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('dev');
   app.enableCors();
 
   const options = new DocumentBuilder()
