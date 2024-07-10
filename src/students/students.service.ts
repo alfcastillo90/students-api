@@ -50,7 +50,10 @@ export class StudentsService {
     return result.Item as Student;
   }
 
-  async update(id: string, updateStudentDto: Partial<CreateStudentDto>): Promise<void> {
+  async update(
+    id: string,
+    updateStudentDto: Partial<CreateStudentDto>,
+  ): Promise<void> {
     await this.dynamoDB
       .update({
         TableName: this.studentsTable,

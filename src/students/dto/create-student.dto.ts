@@ -6,7 +6,10 @@ export class CreateStudentDto {
   @IsString()
   name: string;
 
-  @ApiProperty({ example: 'john.doe@example.com', description: 'The email of the student' })
+  @ApiProperty({
+    example: 'john.doe@example.com',
+    description: 'The email of the student',
+  })
   @IsEmail()
   email: string;
 }

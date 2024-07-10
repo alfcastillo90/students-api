@@ -20,7 +20,7 @@ import {
   ApiSecurity,
 } from '@nestjs/swagger';
 import { Student } from './entities/student.entity';
-import { ApiKeyGuard } from 'src/guards/api-key/api-key.guard';
+import { ApiKeyGuard } from '../guards/api-key/api-key.guard';
 
 @ApiTags('students')
 @ApiSecurity('apiKey')
