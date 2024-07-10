@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DynamoDB } from 'aws-sdk';
+import { v4 as uuidv4 } from 'uuid';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { Student } from './entities/student.entity';
 
@@ -16,13 +17,18 @@ export class StudentsService {
   }
 
   async create(createStudentDto: CreateStudentDto): Promise<Student> {
+    const student: Student = {
+      id: uuidv4(),
+      ...createStudentDto,
+    };
+
     await this.dynamoDB
       .put({
         TableName: this.studentsTable,
-        Item: createStudentDto,
+        Item: student,
       })
       .promise();
-    return createStudentDto;
+    return student;
   }
 
   async findAll(): Promise<Student[]> {
@@ -44,10 +50,7 @@ export class StudentsService {
     return result.Item as Student;
   }
 
-  async update(
-    id: string,
-    updateStudentDto: Partial<CreateStudentDto>,
-  ): Promise<void> {
+  async update(id: string, updateStudentDto: Partial<CreateStudentDto>): Promise<void> {
     await this.dynamoDB
       .update({
         TableName: this.studentsTable,
