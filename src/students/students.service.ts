@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DynamoDB } from 'aws-sdk';
 import { v4 as uuidv4 } from 'uuid';
@@ -47,6 +47,11 @@ export class StudentsService {
         Key: { id },
       })
       .promise();
+
+    if (!result.Item) {
+      throw new NotFoundException(`Student with ID "${id}" not found`);
+    }
+
     return result.Item as Student;
   }
 
