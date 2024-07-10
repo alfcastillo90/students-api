@@ -13,13 +13,11 @@ import { ConfigModule } from '@nestjs/config';
       provide: 'DYNAMODB',
       useFactory: () => {
         return new DynamoDB.DocumentClient({
-          region: 'us-east-1',
-          endpoint: process.env.IS_OFFLINE
-            ? 'http://localhost:8000'
-            : undefined,
+          region: 'us-east-1', // Asegúrate de que esta región coincide con la región de tu tabla
         });
       },
     },
   ],
 })
 export class StudentsModule {}
+  
