@@ -136,9 +136,5 @@ test
 
 ## Contacto
 
-- Author - [Carlos Castillo](https://linkedin.com/in/alfcastillo/
+- Author - [Carlos Castillo](https://linkedin.com/in/alfcastillo/)
 - Github - [https://github.com/alfcastillo90/](https://github.com/alfcastillo90/)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
