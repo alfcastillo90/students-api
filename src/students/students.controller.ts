@@ -8,15 +8,24 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiSecurity,
+} from '@nestjs/swagger';
 import { Student } from './entities/student.entity';
+import { ApiKeyGuard } from 'src/guards/api-key/api-key.guard';
 
 @ApiTags('students')
+@ApiSecurity('apiKey')
 @Controller('students')
+@UseGuards(ApiKeyGuard) // Aplica el guard a todo el controlador
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
