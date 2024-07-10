@@ -12,6 +12,7 @@ export class HealthController {
   @Get()
   @HealthCheck()
   check() {
+    console.log('health controller');
     return this.health.check([
       async () => this.dynamoDBHealthIndicator.isHealthy('dynamoDB'),
     ]);

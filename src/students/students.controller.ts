@@ -49,6 +49,7 @@ export class StudentsController {
     type: [Student],
   })
   findAll(): Promise<Student[]> {
+    console.log('get all students');
     return this.studentsService.findAll();
   }
 

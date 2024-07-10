@@ -39,6 +39,7 @@
     "dotenv": "^16.4.5",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "serverless": "^4.1.11",
     "swagger-ui-express": "^5.0.1",
     "uuid": "^10.0.0"
   },

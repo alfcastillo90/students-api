@@ -1,11 +1,12 @@
 service: students-api
 
-frameworkVersion: '3 || 4'
+frameworkVersion: '4'
 
 provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-1
+  stage: dev
   environment:
     NODE_ENV: ${env:NODE_ENV, 'dev'}
     STUDENTS_TABLE: students-${opt:stage, 'dev'}
@@ -20,6 +21,12 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: arn:aws:dynamodb:us-east-1:374138784102:table/students-dev
+    - Effect: Allow
+      Action:
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+      Resource: arn:aws:logs:us-east-1:*:*
 
 functions:
   app:
