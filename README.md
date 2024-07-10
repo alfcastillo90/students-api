@@ -22,51 +22,122 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# Students API
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Este proyecto es una API serverless construida con NestJS que permite realizar operaciones CRUD en datos de estudiantes. Utiliza AWS DynamoDB para el almacenamiento de datos e integra AWS Lambda usando el Serverless Framework.
 
-## Installation
+## Características
 
+- **Operaciones CRUD**: Crear, Leer, Actualizar y Eliminar registros de estudiantes.
+- **Health Check**: Endpoint para verificar la salud de la aplicación y sus dependencias.
+- **Autenticación con API Key**: Asegura los endpoints de la API con una API key.
+- **Documentación con Swagger**: Documentación de la API generada automáticamente.
+- **Pruebas Unitarias y E2E**: Pruebas exhaustivas utilizando Jest.
+
+## Comenzando
+
+### Requisitos Previos
+
+- Node.js (versión 18.x o superior)
+- Cuenta de AWS con permisos adecuados
+- Serverless Framework CLI
+- AWS CLI configurado con tus credenciales
+
+### Instalación
+
+Instala las dependencias:
 ```bash
 $ npm install
 ```
-
-## Running the app
+Instala DynamoDB Local (opcional para pruebas locales):
+```bash
+$ serverless dynamodb install
+```
+## Configuracion 
+- Crea un archivo .env en la raíz del proyecto y agrega las siguientes variables de entorno:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+AWS_ACCESS_KEY_ID=<tu-aws-access-key-id>
+AWS_SECRET_ACCESS_KEY=<tu-aws-secret-access-key>
+AWS_REGION=us-east-1
+STUDENTS_TABLE=students-table
+API_KEY=tu-api-key-segura
 ```
 
-## Test
+- Asegúrate de que la tabla DynamoDB students-table existe en AWS. Puedes crearla manualmente a través de la consola de AWS o usando una herramienta de infraestructura como código.
+
+## Ejecutando la Aplicación
+
+### Localmente
+
+- Para ejecutar la aplicación localmente con Serverless Offline y DynamoDB Local:
+
+### Desplegando en AWS
+- Para desplegar la aplicación en AWS:
 
 ```bash
-# unit tests
+
+$ serverless deploy
+```
+
+## Uso
+- Una vez que la aplicación esté en funcionamiento, puedes acceder a la documentación de Swagger en:
+
+```bash
+
+$ http://localhost:3000/api
+
+```
+
+- Utiliza la API_KEY proporcionada para las solicitudes autenticadas.
+
+## Pruebas
+
+```bash
+# Pruebas unitarias
 $ npm run test
 
-# e2e tests
+# Pruebas e2e
 $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
 ```
+## Estructura del proyecto
 
-## Support
+```bash
+src
+├── app.controller.ts
+├── app.module.ts
+├── main.ts
+├── students
+│   ├── dto
+│   │   ├── create-student.dto.ts
+│   │   └── update-student.dto.ts
+│   ├── entities
+│   │   └── student.entity.ts
+│   ├── students.controller.ts
+│   ├── students.module.ts
+│   ├── students.service.ts
+├── health
+│   ├── health.controller.ts
+│   ├── health.module.ts
+│   └── dynamodb.health.ts
+├── guards
+│   └── api-key
+│       ├── api-key.guard.ts
+│       └── api-key.guard.spec.ts
+test
+├── app.e2e-spec.ts
+├── health.e2e-spec.ts
+└── jest-e2e.json
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```
 
-## Stay in touch
+## Contacto
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Author - [Carlos Castillo](https://linkedin.com/in/alfcastillo/
+- Github - [https://github.com/alfcastillo90/](https://github.com/alfcastillo90/)
 
 ## License
 
