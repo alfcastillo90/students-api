@@ -11,7 +11,7 @@ const dynamoDB = new DynamoDB.DocumentClient({
   // No necesitamos endpoint para AWS DynamoDB
 });
 
-const studentsTable = process.env.STUDENTS_TABLE || 'students-dev';
+const studentsTable = process.env.STUDENTS_TABLE || 'students-nestjs-dev';
 
 // Función para generar un estudiante aleatorio
 const generateRandomStudent = () => ({

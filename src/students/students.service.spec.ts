@@ -42,7 +42,7 @@ describe('StudentsService', () => {
         {
           provide: ConfigService,
           useValue: {
-            get: jest.fn().mockReturnValue('students-dev'),
+            get: jest.fn().mockReturnValue('students-nestjs-dev'),
           },
         },
       ],
@@ -71,14 +71,14 @@ describe('StudentsService', () => {
         ...createStudentDto,
       };
       (
-        dynamoDB.put({ TableName: 'students-dev', Item: student })
+        dynamoDB.put({ TableName: 'students-nestjs-dev', Item: student })
           .promise as jest.Mock
       ).mockResolvedValue({});
 
       const result = await service.create(createStudentDto);
       expect(result).toEqual(student);
       expect(dynamoDB.put).toHaveBeenCalledWith({
-        TableName: 'students-dev',
+        TableName: 'students-nestjs-dev',
         Item: student,
       });
     });
@@ -97,7 +97,7 @@ describe('StudentsService', () => {
         },
       ];
       (
-        dynamoDB.scan({ TableName: 'students-dev' }).promise as jest.Mock
+        dynamoDB.scan({ TableName: 'students-nestjs-dev' }).promise as jest.Mock
       ).mockResolvedValue({
         Items: students,
       });
@@ -105,7 +105,7 @@ describe('StudentsService', () => {
       const result = await service.findAll();
       expect(result).toEqual(students);
       expect(dynamoDB.scan).toHaveBeenCalledWith({
-        TableName: 'students-dev',
+        TableName: 'students-nestjs-dev',
       });
     });
   });
@@ -121,7 +121,7 @@ describe('StudentsService', () => {
         courses: ['Math', 'Science'],
       };
       (
-        dynamoDB.get({ TableName: 'students-dev', Key: { id: '1' } })
+        dynamoDB.get({ TableName: 'students-nestjs-dev', Key: { id: '1' } })
           .promise as jest.Mock
       ).mockResolvedValue({
         Item: student,
@@ -130,14 +130,14 @@ describe('StudentsService', () => {
       const result = await service.findOne('1');
       expect(result).toEqual(student);
       expect(dynamoDB.get).toHaveBeenCalledWith({
-        TableName: 'students-dev',
+        TableName: 'students-nestjs-dev',
         Key: { id: '1' },
       });
     });
 
     it('should throw a NotFoundException if student is not found', async () => {
       (
-        dynamoDB.get({ TableName: 'students-dev', Key: { id: '1' } })
+        dynamoDB.get({ TableName: 'students-nestjs-dev', Key: { id: '1' } })
           .promise as jest.Mock
       ).mockResolvedValue({});
 
@@ -158,7 +158,7 @@ describe('StudentsService', () => {
       };
       (
         dynamoDB.update({
-          TableName: 'students-dev',
+          TableName: 'students-nestjs-dev',
           Key: { id: '1' },
           UpdateExpression:
             'set #name = :name, #email = :email, #birthDate = :birthDate, #enrollmentDate = :enrollmentDate, #courses = :courses',
@@ -181,7 +181,7 @@ describe('StudentsService', () => {
 
       await service.update('1', updateStudentDto);
       expect(dynamoDB.update).toHaveBeenCalledWith({
-        TableName: 'students-dev',
+        TableName: 'students-nestjs-dev',
         Key: { id: '1' },
         UpdateExpression:
           'set #name = :name, #email = :email, #birthDate = :birthDate, #enrollmentDate = :enrollmentDate, #courses = :courses',
@@ -207,14 +207,14 @@ describe('StudentsService', () => {
     it('should delete a student', async () => {
       (
         dynamoDB.delete({
-          TableName: 'students-dev',
+          TableName: 'students-nestjs-dev',
           Key: {},
         }).promise as jest.Mock
       ).mockResolvedValue({});
 
       await service.remove('1');
       expect(dynamoDB.delete).toHaveBeenCalledWith({
-        TableName: 'students-dev',
+        TableName: 'students-nestjs-dev',
         Key: { id: '1' },
       });
     });

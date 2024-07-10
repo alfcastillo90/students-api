@@ -21,6 +21,7 @@ export class ApiKeyGuard implements CanActivate {
     if (apiKey && apiKey === validApiKey) {
       return true;
     } else {
+      console.log('Invalid API Key');
       throw new UnauthorizedException('Invalid API Key');
     }
   }

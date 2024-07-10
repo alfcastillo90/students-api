@@ -1,4 +1,4 @@
-service: students-api
+service: students-api-nestjs
 
 frameworkVersion: '4'
 
@@ -6,10 +6,9 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-1
-  stage: dev
   environment:
     NODE_ENV: ${env:NODE_ENV, 'dev'}
-    STUDENTS_TABLE: students-${opt:stage, 'dev'}
+    STUDENTS_TABLE: students-nestjs-${opt:stage, 'dev'}
     API_KEY: ${env:API_KEY, 'default_api_key'}
   iamRoleStatements:
     - Effect: Allow
@@ -20,18 +19,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: arn:aws:dynamodb:us-east-1:374138784102:table/students-dev
-    - Effect: Allow
-      Action:
-        - logs:CreateLogGroup
-        - logs:CreateLogStream
-        - logs:PutLogEvents
-      Resource: arn:aws:logs:us-east-1:*:*
-    - Effect: Allow
-      Action:
-        - lambda:InvokeFunction
-        - lambda:GetFunction
-      Resource: arn:aws:lambda:us-east-1:374138784102:function:students-api-dev-app
+      Resource: arn:aws:dynamodb:us-east-1:374138784102:table/students-nestjs-dev
 
 functions:
   app:

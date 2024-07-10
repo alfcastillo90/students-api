@@ -4,7 +4,7 @@ import { ApiExcludeController } from '@nestjs/swagger';
 @ApiExcludeController()
 export class AppController {
   @Get()
-  @Redirect('/api', 301)
+  @Redirect('/dev/api', 301)
   root() {
     return;
   }

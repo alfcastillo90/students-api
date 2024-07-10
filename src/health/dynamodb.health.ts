@@ -19,7 +19,7 @@ export class DynamoDBHealthIndicator extends HealthIndicator {
 
   async isHealthy(key: string): Promise<HealthIndicatorResult> {
     const params = {
-      TableName: 'students-dev',
+      TableName: 'students-nestjs-dev',
       Limit: 1,
     };
     console.log('isHealthy init');

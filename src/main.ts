@@ -14,13 +14,13 @@ async function bootstrapServer() {
   const app = await NestFactory.create(AppModule, adapter);
   app.enableCors();
 
-  app.setGlobalPrefix('dev');
-
   const options = new DocumentBuilder()
     .setTitle('Students API')
     .setDescription('API for managing students')
     .setVersion('1.0')
     .addApiKey({ type: 'apiKey', name: 'x-api-key', in: 'header' }, 'apiKey')
+    .addTag('api')
+    .addServer('/dev')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
@@ -31,7 +31,6 @@ async function bootstrapServer() {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('dev');
   app.enableCors();
 
   const options = new DocumentBuilder()
@@ -39,6 +38,7 @@ async function bootstrap() {
     .setDescription('API for managing students')
     .setVersion('1.0')
     .addApiKey({ type: 'apiKey', name: 'x-api-key', in: 'header' }, 'apiKey')
+    .addTag('api')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
