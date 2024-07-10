@@ -1,26 +1,76 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { DynamoDB } from 'aws-sdk';
 import { CreateStudentDto } from './dto/create-student.dto';
-import { UpdateStudentDto } from './dto/update-student.dto';
+import { Student } from './entities/student.entity';
 
 @Injectable()
 export class StudentsService {
-  create(createStudentDto: CreateStudentDto) {
-    return 'This action adds a new student';
+  private readonly studentsTable: string;
+
+  constructor(
+    @Inject('DYNAMODB') private readonly dynamoDB: DynamoDB.DocumentClient,
+    private readonly configService: ConfigService,
+  ) {
+    this.studentsTable = this.configService.get<string>('STUDENTS_TABLE');
   }
 
-  findAll() {
-    return `This action returns all students`;
+  async create(createStudentDto: CreateStudentDto): Promise<Student> {
+    await this.dynamoDB
+      .put({
+        TableName: this.studentsTable,
+        Item: createStudentDto,
+      })
+      .promise();
+    return createStudentDto;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} student`;
+  async findAll(): Promise<Student[]> {
+    const result = await this.dynamoDB
+      .scan({
+        TableName: this.studentsTable,
+      })
+      .promise();
+    return result.Items as Student[];
   }
 
-  update(id: number, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
+  async findOne(id: string): Promise<Student> {
+    const result = await this.dynamoDB
+      .get({
+        TableName: this.studentsTable,
+        Key: { id },
+      })
+      .promise();
+    return result.Item as Student;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} student`;
+  async update(
+    id: string,
+    updateStudentDto: Partial<CreateStudentDto>,
+  ): Promise<void> {
+    await this.dynamoDB
+      .update({
+        TableName: this.studentsTable,
+        Key: { id },
+        UpdateExpression: 'set #name = :name, #email = :email',
+        ExpressionAttributeNames: {
+          '#name': 'name',
+          '#email': 'email',
+        },
+        ExpressionAttributeValues: {
+          ':name': updateStudentDto.name,
+          ':email': updateStudentDto.email,
+        },
+      })
+      .promise();
+  }
+
+  async remove(id: string): Promise<void> {
+    await this.dynamoDB
+      .delete({
+        TableName: this.studentsTable,
+        Key: { id },
+      })
+      .promise();
   }
 }
